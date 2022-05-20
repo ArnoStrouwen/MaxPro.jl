@@ -2,5 +2,5 @@ using MaxPro
 using Test
 
 @testset "MaxPro.jl" begin
-    # Write your tests here.
+    @test 1+1==2
 end
