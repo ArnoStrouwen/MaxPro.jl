@@ -4,14 +4,11 @@ CurrentModule = MaxPro
 
 # MaxPro
 
-```jldoctest
+```@example ex1
 a = 1
-b = 2
-a + b
-
-# output
-
-3
+```
+```@example ex1
+a + 1
 ```
 
 Documentation for [MaxPro](https://github.com/ArnoStrouwen/MaxPro.jl).
