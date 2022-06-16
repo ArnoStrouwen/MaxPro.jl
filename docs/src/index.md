@@ -4,7 +4,7 @@ CurrentModule = MaxPro
 
 # MaxPro
 
-```jldoctest; output = false
+```jldoctest
 a = 1
 b = 2
 a + b
