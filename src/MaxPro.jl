@@ -1,7 +1,7 @@
 module MaxPro
 
 using LatinHypercubeSampling
-using Optimization, OptimizationNLopt
+using Optimization, OptimizationMOI, Ipopt
 using ReverseDiff
 using Random
 
@@ -25,7 +25,7 @@ function max_pro_design(design0::Matrix{T}) where T
     design0 = reshape(design0,n*d)
     f = OptimizationFunction(max_pro_criterion, Optimization.AutoReverseDiff())
     opti_prob = OptimizationProblem(f, design0, (n=n,d=d), lb = zeros(n*d), ub = ones(n*d))
-    opti_sol = solve(opti_prob, NLopt.LD_LBFGS()) #TBD: make BFGS options available to user
+    opti_sol = solve(opti_prob, Ipopt.Optimizer()) #TBD: make BFGS options available to user
     return reshape(opti_sol.u,n,d)
 end
 function max_pro_design(n::Int,d::Int)
