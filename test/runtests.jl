@@ -3,8 +3,7 @@ using Test
 using Random
 
 @testset "MaxPro.jl" begin
-    _design0 =[
-                23 2 7 9 18 7 14 3;
+    _design0 = [23 2 7 9 18 7 14 3;
                 16 24 14 5 9 20 2 21;
                 12 10 5 13 17 25 7 1;
                 5 23 17 14 12 10 1 2;
@@ -29,13 +28,15 @@ using Random
                 2 7 23 8 16 21 6 14;
                 15 25 18 15 7 6 19 23;
                 14 16 13 7 21 2 25 11]
-    n,d = size(_design0)
-    design0, _ = MaxPro.LHCoptim(n,d,1000;rng=MersenneTwister(0))
+    n, d = size(_design0)
+    design0, _ = MaxPro.LHCoptim(n, d, 1000; rng = MersenneTwister(0))
     @test design0 == _design0
-    design0 = (design0.-one(n))./(n-one(n))
-    @test isapprox(MaxPro.max_pro_criterion(design0), 30.4333599696552,atol=1e-7)
-    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(design0)), 18.95863107020731,atol=1e-7)
-    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(n,d)), 18.95863107020731,atol=1e-7)
-    @test_throws DomainError max_pro_design(-1,1)
-    @test_throws DomainError max_pro_design(1,-1)
+    design0 = (design0 .- one(n)) ./ (n - one(n))
+    @test isapprox(MaxPro.max_pro_criterion(design0), 30.4333599696552, atol = 1e-7)
+    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(design0)), 18.95863107020731,
+                   atol = 1e-7)
+    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(n, d)), 18.95863107020731,
+                   atol = 1e-7)
+    @test_throws DomainError max_pro_design(-1, 1)
+    @test_throws DomainError max_pro_design(1, -1)
 end
