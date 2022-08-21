@@ -1,10 +1,15 @@
 module MaxPro
 
 using LatinHypercubeSampling
-using Optimization, OptimizationOptimJL
+using Optimization, OptimizationNLopt
 using ReverseDiff
 using Random
 
+function max_pro_criterion(design::AbstractArray{T},p::NamedTuple{(:n, :d), Tuple{V, V}}) where{T, V<:Integer}
+    n,d = p.n, p.d
+    design = reshape(design,n,d)
+    return max_pro_criterion(design)
+end
 function max_pro_criterion(design::AbstractMatrix{T}) where T
     n,d = size(design)
     sum_d = zero(T)
@@ -15,14 +20,13 @@ function max_pro_criterion(design::AbstractMatrix{T}) where T
     end
     return (sum_d/T(binomial(n,2)))^T(1/d)
 end
-max_pro_criterion(design,p::SciMLBase.NullParameters) = max_pro_criterion(design)
-
-function max_pro_design(design0::AbstractMatrix{T}) where T
+function max_pro_design(design0::Matrix{T}) where T
     n,d = size(design0)
+    design0 = reshape(design0,n*d)
     f = OptimizationFunction(max_pro_criterion, Optimization.AutoReverseDiff())
-    opti_prob = OptimizationProblem(f, design0, p=nothing, lb = zeros(n,d), ub = ones(n,d))
-    opti_sol = solve(opti_prob, Fminbox(BFGS())) #TBD: make BFGS options available to user
-    return opti_sol.u
+    opti_prob = OptimizationProblem(f, design0, (n=n,d=d), lb = zeros(n*d), ub = ones(n*d))
+    opti_sol = solve(opti_prob, NLopt.LD_LBFGS()) #TBD: make BFGS options available to user
+    return reshape(opti_sol.u,n,d)
 end
 function max_pro_design(n::Int,d::Int)
     n>zero(n) || throw(DomainError(n,"Number of design points n must be strictly positive"))
