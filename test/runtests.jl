@@ -33,10 +33,12 @@ using Random
     @test design0 == _design0
     design0 = (design0 .- one(n)) ./ (n - one(n))
     @test isapprox(MaxPro.max_pro_criterion(design0), 30.4333599696552, atol = 1e-7)
-    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(design0)), 18.95863107020731,
-                   atol = 1e-7)
-    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(n, d)), 18.95863107020731,
-                   atol = 1e-7)
+    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(design0)),
+                   18.95863107020731, atol = 1e-7)
+    @test isapprox(MaxPro.max_pro_criterion(max_pro_design(n, d)),
+                   18.95863107020731, atol = 1e-7)
     @test_throws DomainError max_pro_design(-1, 1)
     @test_throws DomainError max_pro_design(1, -1)
+    @test_throws DomainError max_pro_design(2 * ones(25, 8))
+    @test_throws DomainError max_pro_design(-1 * ones(25, 8))
 end
