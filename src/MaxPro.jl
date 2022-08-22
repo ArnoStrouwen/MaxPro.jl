@@ -60,7 +60,8 @@ function max_pro_design(design0::Matrix{T}) where {T}
     f = OptimizationFunction(max_pro_criterion, Optimization.AutoReverseDiff())
     opti_prob = OptimizationProblem(f, design0, (n = n, d = d), lb = zeros(n * d),
                                     ub = ones(n * d))
-    opti_sol = solve(opti_prob, Ipopt.Optimizer()) #TBD: make Ipopt options available to user
+    optimizer = OptimizationMOI.MOI.OptimizerWithAttributes(Ipopt.Optimizer, "print_level"=>0,"sb"=>"yes")
+    opti_sol = solve(opti_prob, optimizer) #TBD: make Ipopt options available to user
     return reshape(opti_sol.u, n, d)
 end
 
