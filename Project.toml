@@ -13,6 +13,7 @@ ReverseDiff = "37e2e3b7-166d-5795-8a7a-e32c996b4267"
 
 [compat]
 julia = "1.6"
+LatinHypercubeSampling = "1"
 Optimization = "3"
 ReverseDiff = "1"
 OptimizationMOI = "0.1"
